@@ -1,0 +1,84 @@
+[gd_scene load_steps=8 format=3 uid="uid://bto1i1r1bwfu1"]
+
+[ext_resource type="Texture2D" uid="uid://drecpfdvnh10t" path="res://assets/walls.png" id="1_gdf4c"]
+[ext_resource type="PackedScene" uid="uid://cxlp6pwyfdxsq" path="res://src/Character.tscn" id="2_cot36"]
+[ext_resource type="Texture2D" uid="uid://bj5kelftpbc6a" path="res://assets/lamp.png" id="5_5lpye"]
+[ext_resource type="Shader" path="res://src/lighting.gdshader" id="6_1einw"]
+[ext_resource type="Script" path="res://src/Lighting.gd" id="7_6o072"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_axkcl"]
+size = Vector2(12, 6)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vosqx"]
+shader = ExtResource("6_1einw")
+shader_parameter/modulate_color = Color(0.299647, 0.304637, 0.431892, 1)
+shader_parameter/black_point = Color(0.0352941, 0.0392157, 0.0784314, 1)
+shader_parameter/lights = PackedVector2Array()
+shader_parameter/number_of_lights = 1
+shader_parameter/light_radius = 64.0
+shader_parameter/band_1_radius = 54.0
+shader_parameter/band_2_radius = 38.0
+shader_parameter/band_1_strength = 0.3
+shader_parameter/band_2_strength = 0.6
+
+[node name="Room" type="Node2D"]
+
+[node name="Walls" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Walls"]
+polygon = PackedVector2Array(60, 141, 70, 83, 259, 83, 268, 141, 274, 141, 274, 39, 56, 39, 56, 141)
+
+[node name="Sprite" type="Sprite2D" parent="Walls"]
+position = Vector2(56, 24)
+texture = ExtResource("1_gdf4c")
+centered = false
+
+[node name="YSort" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Character" parent="YSort" instance=ExtResource("2_cot36")]
+position = Vector2(166, 104)
+
+[node name="Camera2D" type="Camera2D" parent="YSort/Character"]
+
+[node name="Light" type="Marker2D" parent="YSort/Character" groups=["light"]]
+position = Vector2(-1, -13)
+
+[node name="Lamp" type="StaticBody2D" parent="YSort"]
+position = Vector2(128, 90)
+metadata/_edit_group_ = true
+
+[node name="Sprite" type="Sprite2D" parent="YSort/Lamp"]
+position = Vector2(0, -21)
+texture = ExtResource("5_5lpye")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="YSort/Lamp"]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_axkcl")
+
+[node name="Light" type="Marker2D" parent="YSort/Lamp" groups=["light"]]
+position = Vector2(0, -34)
+
+[node name="Lamp2" type="StaticBody2D" parent="YSort"]
+position = Vector2(205, 105)
+metadata/_edit_group_ = true
+
+[node name="Sprite" type="Sprite2D" parent="YSort/Lamp2"]
+position = Vector2(0, -21)
+texture = ExtResource("5_5lpye")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="YSort/Lamp2"]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_axkcl")
+
+[node name="Light" type="Marker2D" parent="YSort/Lamp2" groups=["light"]]
+position = Vector2(0, -34)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Lighting" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_vosqx")
+custom_minimum_size = Vector2(320, 180)
+offset_right = 320.0
+offset_bottom = 180.0
+script = ExtResource("7_6o072")

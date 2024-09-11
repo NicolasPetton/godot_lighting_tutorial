@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://djwbc4um4u3xi"]
+
+[ext_resource type="Script" path="res://src/Mirror.gd" id="1_xsv3c"]
+[ext_resource type="Texture2D" uid="uid://cuelvdfapqsfn" path="res://assets/mask.png" id="3_5il1r"]
+[ext_resource type="Texture2D" uid="uid://boper4or4ju4o" path="res://assets/mirror.png" id="3_ae46d"]
+[ext_resource type="Texture2D" uid="uid://mjtg3g8r3ua8" path="res://assets/char.png" id="4_gpx5f"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_s57d5"]
+light_mode = 2
+
+[node name="Mirror" type="Node2D"]
+position = Vector2(164, 73)
+script = ExtResource("1_xsv3c")
+metadata/_edit_group_ = true
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -16)
+texture = ExtResource("3_ae46d")
+
+[node name="Reflection" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_s57d5")
+position = Vector2(-1, -11)
+texture = ExtResource("4_gpx5f")
+flip_h = true
+hframes = 4
+vframes = 4
+
+[node name="Mask" type="PointLight2D" parent="."]
+position = Vector2(0, -16)
+blend_mode = 2
+texture = ExtResource("3_5il1r")
